@@ -1,0 +1,60 @@
+name: sym-QA
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: symfony-php-QA
+    working_dir: /var/www/app
+    volumes:
+      - ./app:/var/www/app
+    environment:
+      # Adapter si besoin
+      APP_ENV: dev
+      APP_DEBUG: 1
+      DATABASE_URL: "mysql://symfony:symfony@db:3306/symfony?charset=utf8mb4"
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: symfony-nginx-QA
+    ports:
+      - "8047:80"
+    volumes:
+      - ./app/public:/var/www/app/public
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  db:
+    image: mysql:8.0
+    container_name: symfony-mysql-QA
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - "3323:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    command: [
+      "--default-authentication-plugin=mysql_native_password",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci"
+    ]
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    environment:
+      PMA_HOST: db
+      PMA_USER: symfony
+      PMA_PASSWORD: symfony
+      PMA_ABSOLUTE_URI: http://151.80.144.159:8081/
+    ports:
+      - "8116:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
