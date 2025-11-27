@@ -6359,6 +6359,89 @@
             "install-path": "../symfony/intl"
         },
         {
+            "name": "symfony/json-streamer",
+            "version": "v7.3.5",
+            "version_normalized": "7.3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/json-streamer.git",
+                "reference": "73e7d6bc5fa0d399d4af98efd45af8d8f0ad01eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/json-streamer/zipball/73e7d6bc5fa0d399d4af98efd45af8d8f0ad01eb",
+                "reference": "73e7d6bc5fa0d399d4af98efd45af8d8f0ad01eb",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^5.3",
+                "php": ">=8.2",
+                "psr/container": "^1.1|^2.0",
+                "psr/log": "^1|^2|^3",
+                "symfony/filesystem": "^7.2",
+                "symfony/type-info": "^7.3.3",
+                "symfony/var-exporter": "^7.2"
+            },
+            "require-dev": {
+                "phpstan/phpdoc-parser": "^1.0",
+                "symfony/dependency-injection": "^7.2",
+                "symfony/http-kernel": "^7.2"
+            },
+            "time": "2025-10-01T12:13:20+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\JsonStreamer\\": ""
+                },
+                "exclude-from-classmap": [
+                    "Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Arlaud",
+                    "email": "mathias.arlaud@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides powerful methods to read/write data structures from/into JSON streams.",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "json",
+                "stream"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/json-streamer/tree/v7.3.5"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../symfony/json-streamer"
+        },
+        {
             "name": "symfony/mailer",
             "version": "v7.3.5",
             "version_normalized": "7.3.5.0",
@@ -10093,6 +10176,65 @@
             "install-path": "../symfony/yaml"
         },
         {
+            "name": "symfonycasts/tailwind-bundle",
+            "version": "v0.11.1",
+            "version_normalized": "0.11.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SymfonyCasts/tailwind-bundle.git",
+                "reference": "72590eec2aa532a73ce9394c6d3717fe3efd88f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SymfonyCasts/tailwind-bundle/zipball/72590eec2aa532a73ce9394c6d3717fe3efd88f5",
+                "reference": "72590eec2aa532a73ce9394c6d3717fe3efd88f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "symfony/asset-mapper": "^6.3|^7.0",
+                "symfony/cache": "^6.3|^7.0",
+                "symfony/console": "^5.4|^6.3|^7.0",
+                "symfony/deprecation-contracts": "^2.2|^3.0",
+                "symfony/http-client": "^5.4|^6.3|^7.0",
+                "symfony/process": "^5.4|^6.3|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.6",
+                "symfony/filesystem": "^6.3|^7.0",
+                "symfony/framework-bundle": "^6.3|^7.0",
+                "symfony/phpunit-bridge": "^6.3.9|^7.0"
+            },
+            "time": "2025-07-29T16:22:45+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Symfonycasts\\TailwindBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Weaver",
+                    "homepage": "https://symfonycasts.com"
+                }
+            ],
+            "description": "Delightful Tailwind Support for Symfony + AssetMapper",
+            "keywords": [
+                "asset-mapper",
+                "tailwind"
+            ],
+            "support": {
+                "issues": "https://github.com/SymfonyCasts/tailwind-bundle/issues",
+                "source": "https://github.com/SymfonyCasts/tailwind-bundle/tree/v0.11.1"
+            },
+            "install-path": "../symfonycasts/tailwind-bundle"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.3.1",
             "version_normalized": "1.3.1.0",
@@ -10367,5 +10509,37 @@
         }
     ],
     "dev": true,
-    "dev-package-names": []
+    "dev-package-names": [
+        "masterminds/html5",
+        "myclabs/deep-copy",
+        "phar-io/manifest",
+        "phar-io/version",
+        "phpunit/php-code-coverage",
+        "phpunit/php-file-iterator",
+        "phpunit/php-invoker",
+        "phpunit/php-text-template",
+        "phpunit/php-timer",
+        "phpunit/phpunit",
+        "sebastian/cli-parser",
+        "sebastian/comparator",
+        "sebastian/complexity",
+        "sebastian/diff",
+        "sebastian/environment",
+        "sebastian/exporter",
+        "sebastian/global-state",
+        "sebastian/lines-of-code",
+        "sebastian/object-enumerator",
+        "sebastian/object-reflector",
+        "sebastian/recursion-context",
+        "sebastian/type",
+        "sebastian/version",
+        "staabm/side-effects-detector",
+        "symfony/browser-kit",
+        "symfony/css-selector",
+        "symfony/debug-bundle",
+        "symfony/dom-crawler",
+        "symfony/maker-bundle",
+        "symfony/web-profiler-bundle",
+        "theseer/tokenizer"
+    ]
 }

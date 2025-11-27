@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class DashboardController extends AbstractController
 {
@@ -20,5 +19,11 @@ final class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
         ]);
 
+    }
+
+    #[Route('/sttings', name: "dashboard_settigs")]
+    public function settings():Response
+    {
+        
     }
 }
