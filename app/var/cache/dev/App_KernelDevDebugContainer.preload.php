@@ -287,6 +287,7 @@ $classes[] = 'App\Controller\MétéoController';
 $classes[] = 'App\Controller\RegistrationController';
 $classes[] = 'App\Controller\SecurityController';
 $classes[] = 'App\Form\RegistrationFormType';
+$classes[] = 'App\Repository\GoalRepository';
 $classes[] = 'App\Repository\UserRepository';
 $classes[] = 'Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController';
 $classes[] = 'Symfony\Bundle\FrameworkBundle\Controller\RedirectController';
