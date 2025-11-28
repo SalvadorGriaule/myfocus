@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Form;
 
 use App\Service\CityLoader;
@@ -5,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class YourFormType extends AbstractType
+class CityType extends AbstractType
 {
     private CityLoader $cityLoader;
 
