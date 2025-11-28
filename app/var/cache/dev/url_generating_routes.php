@@ -26,6 +26,7 @@ return [
     'app_register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
     'app_login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], [], []],
     'app_logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], [], []],
+    'app_setting' => [[], ['_controller' => 'App\\Controller\\SettingController::editCity'], [], [['text', '/setting']], [], [], []],
     'App\Controller\DashboardController::index' => [[], ['_controller' => 'App\\Controller\\DashboardController::index'], [], [['text', '/']], [], [], []],
     'App\Controller\DashboardController::toggleGoal' => [['id'], ['_controller' => 'App\\Controller\\DashboardController::toggleGoal'], [], [['text', '/toggle'], ['variable', '/', '[^/]++', 'id', true], ['text', '/dashboard/goal']], [], [], []],
     'App\Controller\DashboardController::deleteGoal' => [['id'], ['_controller' => 'App\\Controller\\DashboardController::deleteGoal'], [], [['text', '/delete'], ['variable', '/', '[^/]++', 'id', true], ['text', '/dashboard/goal']], [], [], []],
@@ -34,4 +35,5 @@ return [
     'App\Controller\RegistrationController::register' => [[], ['_controller' => 'App\\Controller\\RegistrationController::register'], [], [['text', '/register']], [], [], []],
     'App\Controller\SecurityController::login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/login']], [], [], []],
     'App\Controller\SecurityController::logout' => [[], ['_controller' => 'App\\Controller\\SecurityController::logout'], [], [['text', '/logout']], [], [], []],
+    'App\Controller\SettingController::editCity' => [[], ['_controller' => 'App\\Controller\\SettingController::editCity'], [], [['text', '/setting']], [], [], []],
 ];

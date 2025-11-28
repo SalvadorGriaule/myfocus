@@ -1,0 +1,24 @@
+<header class="flex w-full justify-between p-2">
+<a href="{{ path('app_dashboard') }}">
+    <h1>Goal</h1>
+</a>
+<nav>
+    <ul class="flex space-x-2">
+    {% if app.user %} 
+        <a href="{{ path('app_setting') }}">
+            <li>Setting</li>
+        </a>
+        <a href="{{ path('app_logout') }}">
+            <li>logout</li>
+        </a>
+    {% else %}
+    <a href="{{ path('app_login') }}">
+        <li>login</li>
+    </a><a href="{{ path('app_register') }}">
+        <li>register</li>
+    </a>
+    {% endif %}
+
+    </ul>
+</nav>
+</header>
