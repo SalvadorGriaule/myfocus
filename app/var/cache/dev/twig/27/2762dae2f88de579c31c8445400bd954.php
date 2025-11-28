@@ -269,6 +269,6 @@ class __TwigTemplate_6f209dc9fe369a2a6558aa3044252bd1 extends Template
         </div>
     {% endif %}
 {% endblock %}
-", "@WebProfiler/Collector/exception.html.twig", "/home/morales/projet/symfony/myfocus/app/vendor/symfony/web-profiler-bundle/Resources/views/Collector/exception.html.twig");
+", "@WebProfiler/Collector/exception.html.twig", "/media/debiandev/Web/Web/PHP/Symfony/myfocus/app/vendor/symfony/web-profiler-bundle/Resources/views/Collector/exception.html.twig");
     }
 }

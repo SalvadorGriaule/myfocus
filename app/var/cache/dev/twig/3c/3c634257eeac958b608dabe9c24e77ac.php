@@ -181,6 +181,6 @@ class __TwigTemplate_7a6250b332d67c50f5c85eb373b9d4c7 extends Template
 {% block panel %}
     {{ render(controller('web_profiler.controller.router::panelAction', { token: token })) }}
 {% endblock %}
-", "@WebProfiler/Collector/router.html.twig", "/home/morales/projet/symfony/myfocus/app/vendor/symfony/web-profiler-bundle/Resources/views/Collector/router.html.twig");
+", "@WebProfiler/Collector/router.html.twig", "/media/debiandev/Web/Web/PHP/Symfony/myfocus/app/vendor/symfony/web-profiler-bundle/Resources/views/Collector/router.html.twig");
     }
 }

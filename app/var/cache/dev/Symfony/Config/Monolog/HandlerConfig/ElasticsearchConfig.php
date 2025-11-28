@@ -11,6 +11,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 class ElasticsearchConfig 
 {
     private $id;
+    private $hosts;
     private $host;
     private $port;
     private $transport;
@@ -27,6 +28,19 @@ class ElasticsearchConfig
     {
         $this->_usedProperties['id'] = true;
         $this->id = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
+     *
+     * @return $this
+     */
+    public function hosts(ParamConfigurator|array $value): static
+    {
+        $this->_usedProperties['hosts'] = true;
+        $this->hosts = $value;
 
         return $this;
     }
@@ -104,6 +118,12 @@ class ElasticsearchConfig
             unset($value['id']);
         }
 
+        if (array_key_exists('hosts', $value)) {
+            $this->_usedProperties['hosts'] = true;
+            $this->hosts = $value['hosts'];
+            unset($value['hosts']);
+        }
+
         if (array_key_exists('host', $value)) {
             $this->_usedProperties['host'] = true;
             $this->host = $value['host'];
@@ -144,6 +164,9 @@ class ElasticsearchConfig
         $output = [];
         if (isset($this->_usedProperties['id'])) {
             $output['id'] = $this->id;
+        }
+        if (isset($this->_usedProperties['hosts'])) {
+            $output['hosts'] = $this->hosts;
         }
         if (isset($this->_usedProperties['host'])) {
             $output['host'] = $this->host;

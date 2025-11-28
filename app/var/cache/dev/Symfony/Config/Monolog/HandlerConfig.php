@@ -5,7 +5,7 @@ namespace Symfony\Config\Monolog;
 require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'ProcessPsr3MessagesConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'ExcludedHttpCodeConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'PublisherConfig.php';
-require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'MongoConfig.php';
+require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'MongodbConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'ElasticsearchConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'RedisConfig.php';
 require_once __DIR__.\DIRECTORY_SEPARATOR.'HandlerConfig'.\DIRECTORY_SEPARATOR.'PredisConfig.php';
@@ -23,11 +23,12 @@ class HandlerConfig
 {
     private $type;
     private $id;
+    private $enabled;
     private $priority;
     private $level;
     private $bubble;
+    private $interactiveOnly;
     private $appName;
-    private $fillExtraContext;
     private $includeStacktraces;
     private $processPsr3Messages;
     private $path;
@@ -43,7 +44,6 @@ class HandlerConfig
     private $activationStrategy;
     private $stopBuffering;
     private $passthruLevel;
-    private $excluded404s;
     private $excludedHttpCodes;
     private $acceptedLevels;
     private $minLevel;
@@ -54,9 +54,6 @@ class HandlerConfig
     private $url;
     private $exchange;
     private $exchangeName;
-    private $room;
-    private $messageFormat;
-    private $apiVersion;
     private $channel;
     private $botName;
     private $useAttachment;
@@ -64,9 +61,7 @@ class HandlerConfig
     private $includeExtra;
     private $iconEmoji;
     private $webhookUrl;
-    private $team;
-    private $notify;
-    private $nickname;
+    private $excludeFields;
     private $token;
     private $region;
     private $source;
@@ -84,26 +79,20 @@ class HandlerConfig
     private $store;
     private $connectionTimeout;
     private $persistent;
-    private $dsn;
-    private $hubId;
-    private $clientId;
-    private $autoLogStacks;
-    private $release;
-    private $environment;
     private $messageType;
     private $parseMode;
     private $disableWebpagePreview;
     private $disableNotification;
     private $splitLongMessages;
     private $delayBetweenMessages;
+    private $topic;
     private $factor;
     private $tags;
-    private $consoleFormaterOptions;
     private $consoleFormatterOptions;
     private $formatter;
     private $nested;
     private $publisher;
-    private $mongo;
+    private $mongodb;
     private $elasticsearch;
     private $index;
     private $documentType;
@@ -117,7 +106,6 @@ class HandlerConfig
     private $headers;
     private $mailer;
     private $emailPrototype;
-    private $lazy;
     private $verbosityLevels;
     private $channels;
     private $_usedProperties = [];
@@ -144,6 +132,19 @@ class HandlerConfig
     {
         $this->_usedProperties['id'] = true;
         $this->id = $value;
+
+        return $this;
+    }
+
+    /**
+     * @default true
+     * @param ParamConfigurator|bool $value
+     * @return $this
+     */
+    public function enabled($value): static
+    {
+        $this->_usedProperties['enabled'] = true;
+        $this->enabled = $value;
 
         return $this;
     }
@@ -188,6 +189,19 @@ class HandlerConfig
     }
 
     /**
+     * @default false
+     * @param ParamConfigurator|bool $value
+     * @return $this
+     */
+    public function interactiveOnly($value): static
+    {
+        $this->_usedProperties['interactiveOnly'] = true;
+        $this->interactiveOnly = $value;
+
+        return $this;
+    }
+
+    /**
      * @default null
      * @param ParamConfigurator|mixed $value
      * @return $this
@@ -196,19 +210,6 @@ class HandlerConfig
     {
         $this->_usedProperties['appName'] = true;
         $this->appName = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default false
-     * @param ParamConfigurator|bool $value
-     * @return $this
-     */
-    public function fillExtraContext($value): static
-    {
-        $this->_usedProperties['fillExtraContext'] = true;
-        $this->fillExtraContext = $value;
 
         return $this;
     }
@@ -422,21 +423,12 @@ class HandlerConfig
     }
 
     /**
-     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
-     *
-     * @return $this
-     */
-    public function excluded404s(ParamConfigurator|array $value): static
-    {
-        $this->_usedProperties['excluded404s'] = true;
-        $this->excluded404s = $value;
-
-        return $this;
-    }
-
-    /**
      * @template TValue of mixed
      * @param TValue $value
+     * Only for "fingers_crossed" handler type
+     * @example 403
+     * @example 404
+     * @example {"400":["^\/foo","^\/bar"]}
      * @return \Symfony\Config\Monolog\HandlerConfig\ExcludedHttpCodeConfig|$this
      * @psalm-return (TValue is array ? \Symfony\Config\Monolog\HandlerConfig\ExcludedHttpCodeConfig : static)
      */
@@ -574,45 +566,6 @@ class HandlerConfig
      * @param ParamConfigurator|mixed $value
      * @return $this
      */
-    public function room($value): static
-    {
-        $this->_usedProperties['room'] = true;
-        $this->room = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default 'text'
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function messageFormat($value): static
-    {
-        $this->_usedProperties['messageFormat'] = true;
-        $this->messageFormat = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function apiVersion($value): static
-    {
-        $this->_usedProperties['apiVersion'] = true;
-        $this->apiVersion = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
     public function channel($value): static
     {
         $this->_usedProperties['channel'] = true;
@@ -700,40 +653,14 @@ class HandlerConfig
     }
 
     /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
+     * @param ParamConfigurator|list<ParamConfigurator|mixed> $value
+     *
      * @return $this
      */
-    public function team($value): static
+    public function excludeFields(ParamConfigurator|array $value): static
     {
-        $this->_usedProperties['team'] = true;
-        $this->team = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default false
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function notify($value): static
-    {
-        $this->_usedProperties['notify'] = true;
-        $this->notify = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default 'Monolog'
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function nickname($value): static
-    {
-        $this->_usedProperties['nickname'] = true;
-        $this->nickname = $value;
+        $this->_usedProperties['excludeFields'] = true;
+        $this->excludeFields = $value;
 
         return $this;
     }
@@ -961,84 +888,6 @@ class HandlerConfig
     }
 
     /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function dsn($value): static
-    {
-        $this->_usedProperties['dsn'] = true;
-        $this->dsn = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function hubId($value): static
-    {
-        $this->_usedProperties['hubId'] = true;
-        $this->hubId = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function clientId($value): static
-    {
-        $this->_usedProperties['clientId'] = true;
-        $this->clientId = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default false
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function autoLogStacks($value): static
-    {
-        $this->_usedProperties['autoLogStacks'] = true;
-        $this->autoLogStacks = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function release($value): static
-    {
-        $this->_usedProperties['release'] = true;
-        $this->release = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @return $this
-     */
-    public function environment($value): static
-    {
-        $this->_usedProperties['environment'] = true;
-        $this->environment = $value;
-
-        return $this;
-    }
-
-    /**
      * @default 0
      * @param ParamConfigurator|mixed $value
      * @return $this
@@ -1117,6 +966,19 @@ class HandlerConfig
     }
 
     /**
+     * @default null
+     * @param ParamConfigurator|int $value
+     * @return $this
+     */
+    public function topic($value): static
+    {
+        $this->_usedProperties['topic'] = true;
+        $this->topic = $value;
+
+        return $this;
+    }
+
+    /**
      * @default 1
      * @param ParamConfigurator|int $value
      * @return $this
@@ -1138,21 +1000,6 @@ class HandlerConfig
     {
         $this->_usedProperties['tags'] = true;
         $this->tags = $value;
-
-        return $this;
-    }
-
-    /**
-     * @default null
-     * @param ParamConfigurator|mixed $value
-     * @deprecated ".console_formater_options" is deprecated, use ".console_formatter_options" instead.
-     *
-     * @return $this
-     */
-    public function consoleFormaterOptions(mixed $value): static
-    {
-        $this->_usedProperties['consoleFormaterOptions'] = true;
-        $this->consoleFormaterOptions = $value;
 
         return $this;
     }
@@ -1227,26 +1074,26 @@ class HandlerConfig
     /**
      * @template TValue of string|array
      * @param TValue $value
-     * @return \Symfony\Config\Monolog\HandlerConfig\MongoConfig|$this
-     * @psalm-return (TValue is array ? \Symfony\Config\Monolog\HandlerConfig\MongoConfig : static)
+     * @return \Symfony\Config\Monolog\HandlerConfig\MongodbConfig|$this
+     * @psalm-return (TValue is array ? \Symfony\Config\Monolog\HandlerConfig\MongodbConfig : static)
      */
-    public function mongo(string|array $value = []): \Symfony\Config\Monolog\HandlerConfig\MongoConfig|static
+    public function mongodb(string|array $value = []): \Symfony\Config\Monolog\HandlerConfig\MongodbConfig|static
     {
         if (!\is_array($value)) {
-            $this->_usedProperties['mongo'] = true;
-            $this->mongo = $value;
+            $this->_usedProperties['mongodb'] = true;
+            $this->mongodb = $value;
 
             return $this;
         }
 
-        if (!$this->mongo instanceof \Symfony\Config\Monolog\HandlerConfig\MongoConfig) {
-            $this->_usedProperties['mongo'] = true;
-            $this->mongo = new \Symfony\Config\Monolog\HandlerConfig\MongoConfig($value);
+        if (!$this->mongodb instanceof \Symfony\Config\Monolog\HandlerConfig\MongodbConfig) {
+            $this->_usedProperties['mongodb'] = true;
+            $this->mongodb = new \Symfony\Config\Monolog\HandlerConfig\MongodbConfig($value);
         } elseif (0 < \func_num_args()) {
-            throw new InvalidConfigurationException('The node created by "mongo()" has already been initialized. You cannot pass values the second time you call mongo().');
+            throw new InvalidConfigurationException('The node created by "mongodb()" has already been initialized. You cannot pass values the second time you call mongodb().');
         }
 
-        return $this->mongo;
+        return $this->mongodb;
     }
 
     /**
@@ -1466,19 +1313,6 @@ class HandlerConfig
         return $this->emailPrototype;
     }
 
-    /**
-     * @default true
-     * @param ParamConfigurator|bool $value
-     * @return $this
-     */
-    public function lazy($value): static
-    {
-        $this->_usedProperties['lazy'] = true;
-        $this->lazy = $value;
-
-        return $this;
-    }
-
     public function verbosityLevels(array $value = []): \Symfony\Config\Monolog\HandlerConfig\VerbosityLevelsConfig
     {
         if (null === $this->verbosityLevels) {
@@ -1530,6 +1364,12 @@ class HandlerConfig
             unset($value['id']);
         }
 
+        if (array_key_exists('enabled', $value)) {
+            $this->_usedProperties['enabled'] = true;
+            $this->enabled = $value['enabled'];
+            unset($value['enabled']);
+        }
+
         if (array_key_exists('priority', $value)) {
             $this->_usedProperties['priority'] = true;
             $this->priority = $value['priority'];
@@ -1548,16 +1388,16 @@ class HandlerConfig
             unset($value['bubble']);
         }
 
+        if (array_key_exists('interactive_only', $value)) {
+            $this->_usedProperties['interactiveOnly'] = true;
+            $this->interactiveOnly = $value['interactive_only'];
+            unset($value['interactive_only']);
+        }
+
         if (array_key_exists('app_name', $value)) {
             $this->_usedProperties['appName'] = true;
             $this->appName = $value['app_name'];
             unset($value['app_name']);
-        }
-
-        if (array_key_exists('fill_extra_context', $value)) {
-            $this->_usedProperties['fillExtraContext'] = true;
-            $this->fillExtraContext = $value['fill_extra_context'];
-            unset($value['fill_extra_context']);
         }
 
         if (array_key_exists('include_stacktraces', $value)) {
@@ -1650,12 +1490,6 @@ class HandlerConfig
             unset($value['passthru_level']);
         }
 
-        if (array_key_exists('excluded_404s', $value)) {
-            $this->_usedProperties['excluded404s'] = true;
-            $this->excluded404s = $value['excluded_404s'];
-            unset($value['excluded_404s']);
-        }
-
         if (array_key_exists('excluded_http_codes', $value)) {
             $this->_usedProperties['excludedHttpCodes'] = true;
             $this->excludedHttpCodes = array_map(fn ($v) => \is_array($v) ? new \Symfony\Config\Monolog\HandlerConfig\ExcludedHttpCodeConfig($v) : $v, $value['excluded_http_codes']);
@@ -1716,24 +1550,6 @@ class HandlerConfig
             unset($value['exchange_name']);
         }
 
-        if (array_key_exists('room', $value)) {
-            $this->_usedProperties['room'] = true;
-            $this->room = $value['room'];
-            unset($value['room']);
-        }
-
-        if (array_key_exists('message_format', $value)) {
-            $this->_usedProperties['messageFormat'] = true;
-            $this->messageFormat = $value['message_format'];
-            unset($value['message_format']);
-        }
-
-        if (array_key_exists('api_version', $value)) {
-            $this->_usedProperties['apiVersion'] = true;
-            $this->apiVersion = $value['api_version'];
-            unset($value['api_version']);
-        }
-
         if (array_key_exists('channel', $value)) {
             $this->_usedProperties['channel'] = true;
             $this->channel = $value['channel'];
@@ -1776,22 +1592,10 @@ class HandlerConfig
             unset($value['webhook_url']);
         }
 
-        if (array_key_exists('team', $value)) {
-            $this->_usedProperties['team'] = true;
-            $this->team = $value['team'];
-            unset($value['team']);
-        }
-
-        if (array_key_exists('notify', $value)) {
-            $this->_usedProperties['notify'] = true;
-            $this->notify = $value['notify'];
-            unset($value['notify']);
-        }
-
-        if (array_key_exists('nickname', $value)) {
-            $this->_usedProperties['nickname'] = true;
-            $this->nickname = $value['nickname'];
-            unset($value['nickname']);
+        if (array_key_exists('exclude_fields', $value)) {
+            $this->_usedProperties['excludeFields'] = true;
+            $this->excludeFields = $value['exclude_fields'];
+            unset($value['exclude_fields']);
         }
 
         if (array_key_exists('token', $value)) {
@@ -1896,42 +1700,6 @@ class HandlerConfig
             unset($value['persistent']);
         }
 
-        if (array_key_exists('dsn', $value)) {
-            $this->_usedProperties['dsn'] = true;
-            $this->dsn = $value['dsn'];
-            unset($value['dsn']);
-        }
-
-        if (array_key_exists('hub_id', $value)) {
-            $this->_usedProperties['hubId'] = true;
-            $this->hubId = $value['hub_id'];
-            unset($value['hub_id']);
-        }
-
-        if (array_key_exists('client_id', $value)) {
-            $this->_usedProperties['clientId'] = true;
-            $this->clientId = $value['client_id'];
-            unset($value['client_id']);
-        }
-
-        if (array_key_exists('auto_log_stacks', $value)) {
-            $this->_usedProperties['autoLogStacks'] = true;
-            $this->autoLogStacks = $value['auto_log_stacks'];
-            unset($value['auto_log_stacks']);
-        }
-
-        if (array_key_exists('release', $value)) {
-            $this->_usedProperties['release'] = true;
-            $this->release = $value['release'];
-            unset($value['release']);
-        }
-
-        if (array_key_exists('environment', $value)) {
-            $this->_usedProperties['environment'] = true;
-            $this->environment = $value['environment'];
-            unset($value['environment']);
-        }
-
         if (array_key_exists('message_type', $value)) {
             $this->_usedProperties['messageType'] = true;
             $this->messageType = $value['message_type'];
@@ -1968,6 +1736,12 @@ class HandlerConfig
             unset($value['delay_between_messages']);
         }
 
+        if (array_key_exists('topic', $value)) {
+            $this->_usedProperties['topic'] = true;
+            $this->topic = $value['topic'];
+            unset($value['topic']);
+        }
+
         if (array_key_exists('factor', $value)) {
             $this->_usedProperties['factor'] = true;
             $this->factor = $value['factor'];
@@ -1978,12 +1752,6 @@ class HandlerConfig
             $this->_usedProperties['tags'] = true;
             $this->tags = $value['tags'];
             unset($value['tags']);
-        }
-
-        if (array_key_exists('console_formater_options', $value)) {
-            $this->_usedProperties['consoleFormaterOptions'] = true;
-            $this->consoleFormaterOptions = $value['console_formater_options'];
-            unset($value['console_formater_options']);
         }
 
         if (array_key_exists('console_formatter_options', $value)) {
@@ -2010,10 +1778,10 @@ class HandlerConfig
             unset($value['publisher']);
         }
 
-        if (array_key_exists('mongo', $value)) {
-            $this->_usedProperties['mongo'] = true;
-            $this->mongo = \is_array($value['mongo']) ? new \Symfony\Config\Monolog\HandlerConfig\MongoConfig($value['mongo']) : $value['mongo'];
-            unset($value['mongo']);
+        if (array_key_exists('mongodb', $value)) {
+            $this->_usedProperties['mongodb'] = true;
+            $this->mongodb = \is_array($value['mongodb']) ? new \Symfony\Config\Monolog\HandlerConfig\MongodbConfig($value['mongodb']) : $value['mongodb'];
+            unset($value['mongodb']);
         }
 
         if (array_key_exists('elasticsearch', $value)) {
@@ -2094,12 +1862,6 @@ class HandlerConfig
             unset($value['email_prototype']);
         }
 
-        if (array_key_exists('lazy', $value)) {
-            $this->_usedProperties['lazy'] = true;
-            $this->lazy = $value['lazy'];
-            unset($value['lazy']);
-        }
-
         if (array_key_exists('verbosity_levels', $value)) {
             $this->_usedProperties['verbosityLevels'] = true;
             $this->verbosityLevels = \is_array($value['verbosity_levels']) ? new \Symfony\Config\Monolog\HandlerConfig\VerbosityLevelsConfig($value['verbosity_levels']) : $value['verbosity_levels'];
@@ -2126,6 +1888,9 @@ class HandlerConfig
         if (isset($this->_usedProperties['id'])) {
             $output['id'] = $this->id;
         }
+        if (isset($this->_usedProperties['enabled'])) {
+            $output['enabled'] = $this->enabled;
+        }
         if (isset($this->_usedProperties['priority'])) {
             $output['priority'] = $this->priority;
         }
@@ -2135,11 +1900,11 @@ class HandlerConfig
         if (isset($this->_usedProperties['bubble'])) {
             $output['bubble'] = $this->bubble;
         }
+        if (isset($this->_usedProperties['interactiveOnly'])) {
+            $output['interactive_only'] = $this->interactiveOnly;
+        }
         if (isset($this->_usedProperties['appName'])) {
             $output['app_name'] = $this->appName;
-        }
-        if (isset($this->_usedProperties['fillExtraContext'])) {
-            $output['fill_extra_context'] = $this->fillExtraContext;
         }
         if (isset($this->_usedProperties['includeStacktraces'])) {
             $output['include_stacktraces'] = $this->includeStacktraces;
@@ -2186,9 +1951,6 @@ class HandlerConfig
         if (isset($this->_usedProperties['passthruLevel'])) {
             $output['passthru_level'] = $this->passthruLevel;
         }
-        if (isset($this->_usedProperties['excluded404s'])) {
-            $output['excluded_404s'] = $this->excluded404s;
-        }
         if (isset($this->_usedProperties['excludedHttpCodes'])) {
             $output['excluded_http_codes'] = array_map(fn ($v) => $v instanceof \Symfony\Config\Monolog\HandlerConfig\ExcludedHttpCodeConfig ? $v->toArray() : $v, $this->excludedHttpCodes);
         }
@@ -2219,15 +1981,6 @@ class HandlerConfig
         if (isset($this->_usedProperties['exchangeName'])) {
             $output['exchange_name'] = $this->exchangeName;
         }
-        if (isset($this->_usedProperties['room'])) {
-            $output['room'] = $this->room;
-        }
-        if (isset($this->_usedProperties['messageFormat'])) {
-            $output['message_format'] = $this->messageFormat;
-        }
-        if (isset($this->_usedProperties['apiVersion'])) {
-            $output['api_version'] = $this->apiVersion;
-        }
         if (isset($this->_usedProperties['channel'])) {
             $output['channel'] = $this->channel;
         }
@@ -2249,14 +2002,8 @@ class HandlerConfig
         if (isset($this->_usedProperties['webhookUrl'])) {
             $output['webhook_url'] = $this->webhookUrl;
         }
-        if (isset($this->_usedProperties['team'])) {
-            $output['team'] = $this->team;
-        }
-        if (isset($this->_usedProperties['notify'])) {
-            $output['notify'] = $this->notify;
-        }
-        if (isset($this->_usedProperties['nickname'])) {
-            $output['nickname'] = $this->nickname;
+        if (isset($this->_usedProperties['excludeFields'])) {
+            $output['exclude_fields'] = $this->excludeFields;
         }
         if (isset($this->_usedProperties['token'])) {
             $output['token'] = $this->token;
@@ -2309,24 +2056,6 @@ class HandlerConfig
         if (isset($this->_usedProperties['persistent'])) {
             $output['persistent'] = $this->persistent;
         }
-        if (isset($this->_usedProperties['dsn'])) {
-            $output['dsn'] = $this->dsn;
-        }
-        if (isset($this->_usedProperties['hubId'])) {
-            $output['hub_id'] = $this->hubId;
-        }
-        if (isset($this->_usedProperties['clientId'])) {
-            $output['client_id'] = $this->clientId;
-        }
-        if (isset($this->_usedProperties['autoLogStacks'])) {
-            $output['auto_log_stacks'] = $this->autoLogStacks;
-        }
-        if (isset($this->_usedProperties['release'])) {
-            $output['release'] = $this->release;
-        }
-        if (isset($this->_usedProperties['environment'])) {
-            $output['environment'] = $this->environment;
-        }
         if (isset($this->_usedProperties['messageType'])) {
             $output['message_type'] = $this->messageType;
         }
@@ -2345,14 +2074,14 @@ class HandlerConfig
         if (isset($this->_usedProperties['delayBetweenMessages'])) {
             $output['delay_between_messages'] = $this->delayBetweenMessages;
         }
+        if (isset($this->_usedProperties['topic'])) {
+            $output['topic'] = $this->topic;
+        }
         if (isset($this->_usedProperties['factor'])) {
             $output['factor'] = $this->factor;
         }
         if (isset($this->_usedProperties['tags'])) {
             $output['tags'] = $this->tags;
-        }
-        if (isset($this->_usedProperties['consoleFormaterOptions'])) {
-            $output['console_formater_options'] = $this->consoleFormaterOptions;
         }
         if (isset($this->_usedProperties['consoleFormatterOptions'])) {
             $output['console_formatter_options'] = $this->consoleFormatterOptions;
@@ -2366,8 +2095,8 @@ class HandlerConfig
         if (isset($this->_usedProperties['publisher'])) {
             $output['publisher'] = $this->publisher instanceof \Symfony\Config\Monolog\HandlerConfig\PublisherConfig ? $this->publisher->toArray() : $this->publisher;
         }
-        if (isset($this->_usedProperties['mongo'])) {
-            $output['mongo'] = $this->mongo instanceof \Symfony\Config\Monolog\HandlerConfig\MongoConfig ? $this->mongo->toArray() : $this->mongo;
+        if (isset($this->_usedProperties['mongodb'])) {
+            $output['mongodb'] = $this->mongodb instanceof \Symfony\Config\Monolog\HandlerConfig\MongodbConfig ? $this->mongodb->toArray() : $this->mongodb;
         }
         if (isset($this->_usedProperties['elasticsearch'])) {
             $output['elasticsearch'] = $this->elasticsearch instanceof \Symfony\Config\Monolog\HandlerConfig\ElasticsearchConfig ? $this->elasticsearch->toArray() : $this->elasticsearch;
@@ -2407,9 +2136,6 @@ class HandlerConfig
         }
         if (isset($this->_usedProperties['emailPrototype'])) {
             $output['email_prototype'] = $this->emailPrototype instanceof \Symfony\Config\Monolog\HandlerConfig\EmailPrototypeConfig ? $this->emailPrototype->toArray() : $this->emailPrototype;
-        }
-        if (isset($this->_usedProperties['lazy'])) {
-            $output['lazy'] = $this->lazy;
         }
         if (isset($this->_usedProperties['verbosityLevels'])) {
             $output['verbosity_levels'] = $this->verbosityLevels instanceof \Symfony\Config\Monolog\HandlerConfig\VerbosityLevelsConfig ? $this->verbosityLevels->toArray() : $this->verbosityLevels;

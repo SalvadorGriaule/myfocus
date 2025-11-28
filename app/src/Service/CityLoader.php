@@ -24,9 +24,17 @@ class CityLoader
         $cities = [];
 
         foreach ($data as $city) {
-            $cities[$city] = $city; // ou $city['zipcode'] si tu veux
+            $cities[$city['Nom_commune']] = $city['Nom_commune']; // ou $city['zipcode'] si tu veux
         }
 
         return $cities;
+    }
+
+    public function getCitiesWithCoords(): array
+    {
+        $file = $this->projectDir . '/data/france.json';
+        if (!file_exists($file)) return [];
+
+        return json_decode(file_get_contents($file), true);
     }
 }

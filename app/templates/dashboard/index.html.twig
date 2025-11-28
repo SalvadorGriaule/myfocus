@@ -22,9 +22,11 @@
                 <div class="card-header bg-info text-white">
                     Météo ({{ user.city|default('Ville') }})
                 </div>
-                <div class="card-body">
+                <div class="card-body flex space-x-1.5 p-2">
                     {% if weather %}
-                        {# Weather data API a mettre ici #}
+                        <p>{{ weather.vent }} km/h</p>
+                        <p>{{ weather.temperature }}°C</p>
+                        <p>{{ weather.temps }}</p>
                     {% else %}
                         <p class="text-muted">Service météo indisponible pour le moment.</p>
                     {% endif %}

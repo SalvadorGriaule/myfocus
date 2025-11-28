@@ -44,24 +44,13 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
     }
 
     /**
-     * @template TValue of mixed
-     * @param TValue $value
      * @example {"type":"stream","path":"\/var\/log\/symfony.log","level":"ERROR","bubble":"false","formatter":"my_formatter"}
      * @example {"type":"fingers_crossed","action_level":"WARNING","buffer_size":30,"handler":"custom"}
      * @example {"type":"service","id":"my_handler"}
-     * @return \Symfony\Config\Monolog\HandlerConfig|$this
-     * @psalm-return (TValue is array ? \Symfony\Config\Monolog\HandlerConfig : static)
-     */
-    public function handler(string $name, mixed $value = []): \Symfony\Config\Monolog\HandlerConfig|static
+    */
+    public function handler(string $name, array $value = []): \Symfony\Config\Monolog\HandlerConfig
     {
-        if (!\is_array($value)) {
-            $this->_usedProperties['handlers'] = true;
-            $this->handlers[$name] = $value;
-
-            return $this;
-        }
-
-        if (!isset($this->handlers[$name]) || !$this->handlers[$name] instanceof \Symfony\Config\Monolog\HandlerConfig) {
+        if (!isset($this->handlers[$name])) {
             $this->_usedProperties['handlers'] = true;
             $this->handlers[$name] = new \Symfony\Config\Monolog\HandlerConfig($value);
         } elseif (1 < \func_num_args()) {
@@ -92,7 +81,7 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
 
         if (array_key_exists('handlers', $value)) {
             $this->_usedProperties['handlers'] = true;
-            $this->handlers = array_map(fn ($v) => \is_array($v) ? new \Symfony\Config\Monolog\HandlerConfig($v) : $v, $value['handlers']);
+            $this->handlers = array_map(fn ($v) => new \Symfony\Config\Monolog\HandlerConfig($v), $value['handlers']);
             unset($value['handlers']);
         }
 
@@ -111,7 +100,7 @@ class MonologConfig implements \Symfony\Component\Config\Builder\ConfigBuilderIn
             $output['channels'] = $this->channels;
         }
         if (isset($this->_usedProperties['handlers'])) {
-            $output['handlers'] = array_map(fn ($v) => $v instanceof \Symfony\Config\Monolog\HandlerConfig ? $v->toArray() : $v, $this->handlers);
+            $output['handlers'] = array_map(fn ($v) => $v->toArray(), $this->handlers);
         }
 
         return $output;

@@ -7,6 +7,7 @@ use App\Form\GoalType;
 use App\Repository\GoalRepository;
 use App\Service\FinanceService;
 use App\Service\NewsService;
+use App\Service\UserWeatherService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,8 @@ final class DashboardController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         NewsService $newsService,
-        FinanceService $financeService
+        FinanceService $financeService,
+        UserWeatherService $weatherService
     ): Response {
         $user = $this->getUser();
         if (!$user) {
@@ -41,7 +43,7 @@ final class DashboardController extends AbstractController
         }
 
         // Récupère Data
-        $weather = null; // Placeholder pour weather API
+        $weather = $weatherService->getCurrentForUser($this->getUser()->getId()); // Placeholder pour weather API
         $news = $newsService->getNews($user->getNewsKeywords() ?? 'technology');
         $finance = [
             'rate' => $financeService->getExchangeRate(),
