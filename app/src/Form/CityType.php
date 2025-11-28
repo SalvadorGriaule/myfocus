@@ -6,6 +6,7 @@ use App\Service\CityLoader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CityType extends AbstractType
 {
@@ -21,6 +22,8 @@ class CityType extends AbstractType
         $builder->add('city', ChoiceType::class, [
             'choices' => $this->cityLoader->getCities(),
             'placeholder' => 'Choisissez une ville',
-        ]);
+             'required' => true,
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Enregistrer']);
     }
 }

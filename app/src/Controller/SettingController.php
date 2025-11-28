@@ -28,7 +28,7 @@ final class SettingController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Ville enregistrée.');
-            return $this->redirectToRoute('app_profile_city');
+            return $this->redirectToRoute('app_dashboard');
         }
 
         return $this->render('setting/index.html.twig', [

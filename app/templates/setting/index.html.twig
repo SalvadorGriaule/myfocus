@@ -9,6 +9,21 @@
 </style>
 
 <section>
-    {{ form(form) }}
+
+    {{ form_errors(form) }}
+    
+    {{ form_start(form) }}
+    <div class="ml-2">
+    <div class="flex space-x-2 ">
+        <span>
+            {{ form_label(form.city) }}
+        </span>
+        <span>
+        {{ form_widget(form.city) }}
+        </span>
+    </div>
+    {{ form_row(form.save) }}
+    </div>
+    {{ form_end(form) }}
 </section>
 {% endblock %}
