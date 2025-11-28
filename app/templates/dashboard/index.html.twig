@@ -1,20 +1,118 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DashboardController!{% endblock %}
+{% block title %}Mon Dashboard - MyFocus{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1>Bonjour, {{ user.email }} !</h1>
+            <p class="text-muted">
+                Ville : {{ user.city|default('Non définie') }} | 
+                Mots-clés : {{ user.newsKeywords|default('Aucun') }}
+                {# Link to settings could go here #}
+            </p>
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="row">
+        {# Weather Section (Placeholder) #}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    Météo ({{ user.city|default('Ville') }})
+                </div>
+                <div class="card-body">
+                    {% if weather %}
+                        {# Weather data API a mettre ici #}
+                    {% else %}
+                        <p class="text-muted">Service météo indisponible pour le moment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/morales/projet/symfony/myfocus/app/src/Controller/DashboardController.php</code></li>
-        <li>Your template at <code>/home/morales/projet/symfony/myfocus/app/templates/dashboard/index.html.twig</code></li>
-    </ul>
+        {# Finance Section #}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    Finance
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            EUR &rarr; USD
+                            <span class="badge bg-primary rounded-pill">{{ finance.rate }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Bitcoin (BTC)
+                            <span class="badge bg-warning text-dark rounded-pill">{{ finance.bitcoin|number_format(0, ',', ' ') }} €</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {# Goals Section #}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                    Mes Objectifs du jour
+                </div>
+                <div class="card-body">
+                    {{ form_start(goalForm, {'attr': {'class': 'mb-3 d-flex'}}) }}
+                        {{ form_widget(goalForm.title, {'attr': {'class': 'form-control me-2'}}) }}
+                        <button type="submit" class="btn btn-primary">+</button>
+                    {{ form_end(goalForm) }}
+
+                    <ul class="list-group">
+                        {% for goal in goals %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="{{ goal.isDone ? 'text-decoration-line-through text-muted' : '' }}">
+                                    {{ goal.title }}
+                                </span>
+                                <div>
+                                    <a href="{{ path('app_goal_toggle', {'id': goal.id}) }}" class="btn btn-sm {{ goal.isDone ? 'btn-secondary' : 'btn-outline-success' }}">
+                                        {{ goal.isDone ? 'Undo' : 'Done' }}
+                                    </a>
+                                    <a href="{{ path('app_goal_delete', {'id': goal.id}) }}" class="btn btn-sm btn-outline-danger">X</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item text-muted">Aucun objectif pour aujourd'hui.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# News Section #}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    Actualités ({{ user.newsKeywords|default('Général') }})
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for article in news %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ article.title }}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ article.source }}</h6>
+                                        <a href="{{ article.url }}" target="_blank" class="card-link">Lire l'article</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p>Aucune actualité trouvée.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

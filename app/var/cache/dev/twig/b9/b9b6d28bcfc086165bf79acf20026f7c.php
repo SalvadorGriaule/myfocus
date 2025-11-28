@@ -305,6 +305,6 @@ class __TwigTemplate_fb8bb8fd2f88cff45d4579f4a88dbd40 extends Template
         });
     </script>
 {% endblock %}
-", "@WebProfiler/Profiler/open.html.twig", "/var/www/app/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/open.html.twig");
+", "@WebProfiler/Profiler/open.html.twig", "/home/user/myfocus/app/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/open.html.twig");
     }
 }

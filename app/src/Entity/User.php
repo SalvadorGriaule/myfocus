@@ -113,4 +113,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // @deprecated, to be removed when upgrading to Symfony 8
     }
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $newsKeywords = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Goal::class, orphanRemoval: true)]
+    private $goals;
+
+    public function __construct()
+    {
+        $this->goals = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): static
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getNewsKeywords(): ?string
+    {
+        return $this->newsKeywords;
+    }
+
+    public function setNewsKeywords(?string $newsKeywords): static
+    {
+        $this->newsKeywords = $newsKeywords;
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection<int, Goal>
+     */
+    public function getGoals(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->goals;
+    }
+
+    public function addGoal(Goal $goal): static
+    {
+        if (!$this->goals->contains($goal)) {
+            $this->goals->add($goal);
+            $goal->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoal(Goal $goal): static
+    {
+        if ($this->goals->removeElement($goal)) {
+            // set the owning side to null (unless already changed)
+            if ($goal->getUser() === $this) {
+                $goal->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

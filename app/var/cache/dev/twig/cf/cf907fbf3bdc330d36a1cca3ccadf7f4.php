@@ -182,6 +182,6 @@ class __TwigTemplate_83bd7a469ed0413daf6e9afc6719a705 extends Template
         <button type=\"submit\" class=\"btn\">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
-", "registration/register.html.twig", "/var/www/app/templates/registration/register.html.twig");
+", "registration/register.html.twig", "/home/user/myfocus/app/templates/registration/register.html.twig");
     }
 }

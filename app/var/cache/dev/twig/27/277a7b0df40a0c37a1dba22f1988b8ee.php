@@ -219,6 +219,6 @@ class __TwigTemplate_c19957a223d6968e06a0293b3ff6bba4 extends Template
         </button>
     </form>
 {% endblock %}
-", "security/login.html.twig", "/var/www/app/templates/security/login.html.twig");
+", "security/login.html.twig", "/home/user/myfocus/app/templates/security/login.html.twig");
     }
 }

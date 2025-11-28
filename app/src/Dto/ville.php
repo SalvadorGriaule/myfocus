@@ -1,6 +1,8 @@
+<?php
+
 namespace App\Dto;
 
-class Cat
+class ville
 {
     public string $name;
     public string $age;

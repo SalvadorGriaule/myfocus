@@ -170,6 +170,6 @@ class __TwigTemplate_cdab911d85a482093489409d475992cd extends Template
     </ul>
 </div>
 {% endblock %}
-", "home/index.html.twig", "/var/www/app/templates/home/index.html.twig");
+", "home/index.html.twig", "/home/user/myfocus/app/templates/home/index.html.twig");
     }
 }

@@ -1,1 +1,1 @@
-{"resources":[{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/app/assets/styles/app.css"}]}
+{"resources":[{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/app/var/tailwind/app.built.css"},{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/app/assets/styles/app.css"}]}
