@@ -954,7 +954,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
 
     /**
      * JSON streamer configuration
-     * @default {"enabled":false}
+     * @default {"enabled":true}
     */
     public function jsonStreamer(array $value = []): \Symfony\Config\Framework\JsonStreamerConfig
     {
@@ -1289,7 +1289,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
 
         if (array_key_exists('json_streamer', $value)) {
             $this->_usedProperties['jsonStreamer'] = true;
-            $this->jsonStreamer = \is_array($value['json_streamer']) ? new \Symfony\Config\Framework\JsonStreamerConfig($value['json_streamer']) : $value['json_streamer'];
+            $this->jsonStreamer = new \Symfony\Config\Framework\JsonStreamerConfig($value['json_streamer']);
             unset($value['json_streamer']);
         }
 
@@ -1458,7 +1458,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
             $output['remote-event'] = $this->remoteevent instanceof \Symfony\Config\Framework\RemoteeventConfig ? $this->remoteevent->toArray() : $this->remoteevent;
         }
         if (isset($this->_usedProperties['jsonStreamer'])) {
-            $output['json_streamer'] = $this->jsonStreamer instanceof \Symfony\Config\Framework\JsonStreamerConfig ? $this->jsonStreamer->toArray() : $this->jsonStreamer;
+            $output['json_streamer'] = $this->jsonStreamer->toArray();
         }
 
         return $output;

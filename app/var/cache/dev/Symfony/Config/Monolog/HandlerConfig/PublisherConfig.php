@@ -14,6 +14,7 @@ class PublisherConfig
     private $hostname;
     private $port;
     private $chunkSize;
+    private $encoder;
     private $_usedProperties = [];
 
     /**
@@ -68,6 +69,19 @@ class PublisherConfig
         return $this;
     }
 
+    /**
+     * @default null
+     * @param ParamConfigurator|'json'|'compressed_json' $value
+     * @return $this
+     */
+    public function encoder($value): static
+    {
+        $this->_usedProperties['encoder'] = true;
+        $this->encoder = $value;
+
+        return $this;
+    }
+
     public function __construct(array $value = [])
     {
         if (array_key_exists('id', $value)) {
@@ -94,6 +108,12 @@ class PublisherConfig
             unset($value['chunk_size']);
         }
 
+        if (array_key_exists('encoder', $value)) {
+            $this->_usedProperties['encoder'] = true;
+            $this->encoder = $value['encoder'];
+            unset($value['encoder']);
+        }
+
         if ([] !== $value) {
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
@@ -113,6 +133,9 @@ class PublisherConfig
         }
         if (isset($this->_usedProperties['chunkSize'])) {
             $output['chunk_size'] = $this->chunkSize;
+        }
+        if (isset($this->_usedProperties['encoder'])) {
+            $output['encoder'] = $this->encoder;
         }
 
         return $output;

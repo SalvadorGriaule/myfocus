@@ -381,11 +381,13 @@
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\HomeController"/>
       </call>
     </service>
-    <service id="App\Controller\MétéoController" class="App\Controller\MétéoController" public="true" autowire="true" autoconfigure="true">
+    <service id="App\Controller\MeteoController" class="App\Controller\MeteoController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
+      <argument type="service" id="App\Service\CityLoader"/>
+      <argument type="service" id=".debug.http_client"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\MétéoController"/>
+        <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\MeteoController"/>
       </call>
     </service>
     <service id="App\Controller\RegistrationController" class="App\Controller\RegistrationController" public="true" autowire="true" autoconfigure="true">
@@ -409,7 +411,15 @@
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\SettingController"/>
       </call>
     </service>
-    <service id="App\Dto\ville" class="App\Dto\ville" autowire="true" autoconfigure="true"/>
+    <service id="App\Dto\DataSerie" class="App\Dto\DataSerie" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\Dto\DataSerie&quot;: argument &quot;$timepoint&quot; of method &quot;__construct()&quot; is type-hinted &quot;int&quot;, you should configure its value explicitly."/>
+    </service>
+    <service id="App\Dto\SevenTimerForecast" class="App\Dto\SevenTimerForecast" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\Dto\SevenTimerForecast&quot;: argument &quot;$product&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
+    </service>
+    <service id="App\Dto\Wind" class="App\Dto\Wind" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\Dto\Wind&quot;: argument &quot;$direction&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
+    </service>
     <service id="App\Entity\Goal" class="App\Entity\Goal" autowire="true" autoconfigure="true">
       <tag name="container.excluded" source="because it's a Doctrine entity"/>
       <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
@@ -436,11 +446,21 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Serializer\SevenTimerNormalizer" class="App\Serializer\SevenTimerNormalizer" autowire="true" autoconfigure="true">
+      <tag name="serializer.normalizer"/>
+      <tag name="serializer.normalizer.default"/>
+    </service>
     <service id="App\Service\CityLoader" class="App\Service\CityLoader" autowire="true" autoconfigure="true">
       <argument type="service" id="parameter_bag"/>
     </service>
     <service id="App\Service\FinanceService" class="App\Service\FinanceService" autowire="true" autoconfigure="true"/>
     <service id="App\Service\NewsService" class="App\Service\NewsService" autowire="true" autoconfigure="true"/>
+    <service id="App\Service\UserWeatherService" class="App\Service\UserWeatherService" autowire="true" autoconfigure="true">
+      <argument type="service" id="App\Service\CityLoader"/>
+      <argument type="service" id=".debug.http_client"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Serializer\SevenTimerNormalizer"/>
+    </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
       <tag priority="100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">controller.argument_value_resolver</tag>
@@ -469,7 +489,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.42xTr6_"/>
+      <argument type="service" id=".service_locator.pDe5UeP"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -3508,7 +3528,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.42xTr6_"/>
+      <argument type="service" id=".service_locator.pDe5UeP"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -7724,10 +7744,9 @@
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
     <service id=".instanceof.App\Controller\HomeController.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MétéoController" class="App\Controller\MétéoController" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MétéoController" class="App\Controller\MétéoController" autowire="true" abstract="true"/>
-    <service id=".instanceof.App\Controller\MétéoController.0.App\Controller\MétéoController" class="App\Controller\MétéoController" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\MétéoController" class="App\Controller\MétéoController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MeteoController" class="App\Controller\MeteoController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MeteoController" class="App\Controller\MeteoController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\MeteoController" class="App\Controller\MeteoController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\RegistrationController" class="App\Controller\RegistrationController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\RegistrationController" class="App\Controller\RegistrationController" autowire="true" abstract="true"/>
     <service id=".instanceof.App\Controller\RegistrationController.0.App\Controller\RegistrationController" class="App\Controller\RegistrationController" autowire="true" abstract="true"/>
@@ -7754,6 +7773,8 @@
     <service id=".abstract.instanceof.App\Repository\GoalRepository" class="App\Repository\GoalRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Serializer\Normalizer\DenormalizerInterface.0.App\Serializer\SevenTimerNormalizer" class="App\Serializer\SevenTimerNormalizer" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Serializer\SevenTimerNormalizer" class="App\Serializer\SevenTimerNormalizer" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.pRu6x_4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8288,19 +8309,20 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.zHyJIs5" method="withContext"/>
     </service>
-    <service id=".service_locator.ITfHtd1" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.dJPDaI_" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="newsService" type="service_closure" id="App\Service\NewsService"/>
         <argument key="financeService" type="service_closure" id="App\Service\FinanceService"/>
+        <argument key="weatherService" type="service_closure" id="App\Service\UserWeatherService"/>
       </argument>
     </service>
-    <service id=".service_locator.ITfHtd1.App\Controller\DashboardController::index()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.dJPDaI_.App\Controller\DashboardController::index()" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\DashboardController::index()"/>
       <argument>App\Controller\DashboardController::index()</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator.ITfHtd1" method="withContext"/>
+      <factory service=".service_locator.dJPDaI_" method="withContext"/>
     </service>
     <service id=".service_locator.YFkhmSR" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -8359,14 +8381,14 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
-    <service id=".service_locator.42xTr6_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.pDe5UeP" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.zHyJIs5.kernel::loadRoutes()"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.zHyJIs5.kernel::loadRoutes()"/>
-        <argument key="App\Controller\DashboardController::index" type="service_closure" id=".service_locator.ITfHtd1.App\Controller\DashboardController::index()"/>
+        <argument key="App\Controller\DashboardController::index" type="service_closure" id=".service_locator.dJPDaI_.App\Controller\DashboardController::index()"/>
         <argument key="App\Controller\DashboardController::toggleGoal" type="service_closure" id=".service_locator.YFkhmSR.App\Controller\DashboardController::toggleGoal()"/>
         <argument key="App\Controller\DashboardController::deleteGoal" type="service_closure" id=".service_locator.YFkhmSR.App\Controller\DashboardController::deleteGoal()"/>
         <argument key="App\Controller\RegistrationController::register" type="service_closure" id=".service_locator.tEL1pRK.App\Controller\RegistrationController::register()"/>
@@ -8374,7 +8396,7 @@
         <argument key="App\Controller\SettingController::editCity" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\SettingController::editCity()"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.zHyJIs5.kernel::loadRoutes()"/>
-        <argument key="App\Controller\DashboardController:index" type="service_closure" id=".service_locator.ITfHtd1.App\Controller\DashboardController::index()"/>
+        <argument key="App\Controller\DashboardController:index" type="service_closure" id=".service_locator.dJPDaI_.App\Controller\DashboardController::index()"/>
         <argument key="App\Controller\DashboardController:toggleGoal" type="service_closure" id=".service_locator.YFkhmSR.App\Controller\DashboardController::toggleGoal()"/>
         <argument key="App\Controller\DashboardController:deleteGoal" type="service_closure" id=".service_locator.YFkhmSR.App\Controller\DashboardController::deleteGoal()"/>
         <argument key="App\Controller\RegistrationController:register" type="service_closure" id=".service_locator.tEL1pRK.App\Controller\RegistrationController::register()"/>
@@ -8406,6 +8428,11 @@
     </service>
     <service id=".debug.serializer.normalizer.serializer.denormalizer.unwrapping" class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
       <argument type="service" id="serializer.denormalizer.unwrapping"/>
+      <argument type="service" id="serializer.data_collector"/>
+      <argument>default</argument>
+    </service>
+    <service id=".debug.serializer.normalizer.App\Serializer\SevenTimerNormalizer" class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
+      <argument type="service" id="App\Serializer\SevenTimerNormalizer"/>
       <argument type="service" id="serializer.data_collector"/>
       <argument>default</argument>
     </service>
@@ -8990,9 +9017,9 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.ZyP9f7K" method="withContext"/>
     </service>
-    <service id=".service_locator.ZyP9f7K.App\Controller\MétéoController" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\MétéoController"/>
-      <argument>App\Controller\MétéoController</argument>
+    <service id=".service_locator.ZyP9f7K.App\Controller\MeteoController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\MeteoController"/>
+      <argument>App\Controller\MeteoController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.ZyP9f7K" method="withContext"/>
     </service>
@@ -9215,7 +9242,7 @@
           <argument>App\Kernel</argument>
           <argument>App\Controller\DashboardController</argument>
           <argument>App\Controller\HomeController</argument>
-          <argument>App\Controller\MétéoController</argument>
+          <argument>App\Controller\MeteoController</argument>
           <argument>App\Controller\RegistrationController</argument>
           <argument>App\Controller\SecurityController</argument>
           <argument>App\Controller\SettingController</argument>
@@ -9257,6 +9284,13 @@
         <argument type="service">
           <service class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
             <argument type="service" id="serializer.denormalizer.unwrapping"/>
+            <argument type="service" id="serializer.data_collector"/>
+            <argument>default</argument>
+          </service>
+        </argument>
+        <argument type="service">
+          <service class="Symfony\Component\Serializer\Debug\TraceableNormalizer">
+            <argument type="service" id="App\Serializer\SevenTimerNormalizer"/>
             <argument type="service" id="serializer.data_collector"/>
             <argument>default</argument>
           </service>
@@ -10687,7 +10721,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.pRu6x_4" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.42xTr6_"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.pDe5UeP"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.BxSdgVt"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id=".Psr\Log\LoggerInterface $request.logger" alias="monolog.logger.request"/>
@@ -10751,7 +10785,7 @@
     <service id="messenger.bus.default" alias="debug.traced.messenger.bus.default"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.n_ENPtW" alias=".service_locator.zHyJIs5"/>
-    <service id=".service_locator.jO01f_P" alias=".service_locator.ITfHtd1"/>
+    <service id=".service_locator.m.yXraf" alias=".service_locator.dJPDaI_"/>
     <service id=".service_locator.WmE9W9z" alias=".service_locator.YFkhmSR"/>
     <service id=".service_locator.o4KKgIJ" alias=".service_locator.tEL1pRK"/>
     <service id=".service_locator.Nrz07Zz" alias=".service_locator.3QECKYg"/>

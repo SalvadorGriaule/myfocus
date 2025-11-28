@@ -18,7 +18,7 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     private $postcssConfigFile;
     private $strictMode;
     private $_usedProperties = [];
-    
+
     /**
      * @param ParamConfigurator|list<ParamConfigurator|mixed>|mixed $value
      *
@@ -28,10 +28,10 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['inputCss'] = true;
         $this->inputCss = $value;
-    
+
         return $this;
     }
-    
+
     /**
      * Path to the tailwind.config.js file
      * @default '%kernel.project_dir%/tailwind.config.js'
@@ -42,10 +42,10 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['configFile'] = true;
         $this->configFile = $value;
-    
+
         return $this;
     }
-    
+
     /**
      * The tailwind binary to use instead of downloading a new one
      * @default null
@@ -56,10 +56,10 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['binary'] = true;
         $this->binary = $value;
-    
+
         return $this;
     }
-    
+
     /**
      * Tailwind CLI version to download - null means the latest version
      * @default null
@@ -70,10 +70,10 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['binaryVersion'] = true;
         $this->binaryVersion = $value;
-    
+
         return $this;
     }
-    
+
     /**
      * Tailwind CLI platform to download - "auto" will try to detect the platform automatically
      * @default 'auto'
@@ -84,10 +84,10 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['binaryPlatform'] = true;
         $this->binaryPlatform = $value;
-    
+
         return $this;
     }
-    
+
     /**
      * Path to PostCSS config file which is passed to the Tailwind CLI
      * @default null
@@ -98,10 +98,10 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['postcssConfigFile'] = true;
         $this->postcssConfigFile = $value;
-    
+
         return $this;
     }
-    
+
     /**
      * When enabled, an exception will be thrown if there are no built assets (default: false in `test` env, true otherwise)
      * @default null
@@ -112,15 +112,15 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
     {
         $this->_usedProperties['strictMode'] = true;
         $this->strictMode = $value;
-    
+
         return $this;
     }
-    
+
     public function getExtensionAlias(): string
     {
         return 'symfonycasts_tailwind';
     }
-    
+
     public function __construct(array $value = [])
     {
         if (array_key_exists('input_css', $value)) {
@@ -128,48 +128,48 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
             $this->inputCss = $value['input_css'];
             unset($value['input_css']);
         }
-    
+
         if (array_key_exists('config_file', $value)) {
             $this->_usedProperties['configFile'] = true;
             $this->configFile = $value['config_file'];
             unset($value['config_file']);
         }
-    
+
         if (array_key_exists('binary', $value)) {
             $this->_usedProperties['binary'] = true;
             $this->binary = $value['binary'];
             unset($value['binary']);
         }
-    
+
         if (array_key_exists('binary_version', $value)) {
             $this->_usedProperties['binaryVersion'] = true;
             $this->binaryVersion = $value['binary_version'];
             unset($value['binary_version']);
         }
-    
+
         if (array_key_exists('binary_platform', $value)) {
             $this->_usedProperties['binaryPlatform'] = true;
             $this->binaryPlatform = $value['binary_platform'];
             unset($value['binary_platform']);
         }
-    
+
         if (array_key_exists('postcss_config_file', $value)) {
             $this->_usedProperties['postcssConfigFile'] = true;
             $this->postcssConfigFile = $value['postcss_config_file'];
             unset($value['postcss_config_file']);
         }
-    
+
         if (array_key_exists('strict_mode', $value)) {
             $this->_usedProperties['strictMode'] = true;
             $this->strictMode = $value['strict_mode'];
             unset($value['strict_mode']);
         }
-    
+
         if ([] !== $value) {
             throw new InvalidConfigurationException(sprintf('The following keys are not supported by "%s": ', __CLASS__).implode(', ', array_keys($value)));
         }
     }
-    
+
     public function toArray(): array
     {
         $output = [];
@@ -194,7 +194,7 @@ class SymfonycastsTailwindConfig implements \Symfony\Component\Config\Builder\Co
         if (isset($this->_usedProperties['strictMode'])) {
             $output['strict_mode'] = $this->strictMode;
         }
-    
+
         return $output;
     }
 
