@@ -14,18 +14,17 @@ class CityLoader
         $this->projectDir = $params->get('kernel.project_dir');
     }
 
-    public function getCities(LoggerInterface $logger): array
+    public function getCities(): array
     {
         $file = $this->projectDir . '/data/france.json';
         if (!file_exists($file)) {
             return [];
         }
         $data = json_decode(file_get_contents($file), true);
-        $logger->info($data);
         $cities = [];
 
         foreach ($data as $city) {
-            $cities[$city['Nom_commune']] = $city['Nom_commune']; // ou $city['zipcode'] si tu veux
+            $cities[$city] = $city; // ou $city['zipcode'] si tu veux
         }
 
         return $cities;
