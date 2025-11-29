@@ -5,6 +5,14 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
+    http_client:
+        scoped_clients:
+            coinGeckoClient:
+                base_uri: 'https://api.coingecko.com'
+                timeout: 5
+            exchangeClient:
+                base_uri: 'https://api.frankfurter.dev/v1/'
+                timeout: 5
     #esi: true
     #fragments: true
 

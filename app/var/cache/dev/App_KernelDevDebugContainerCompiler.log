@@ -170,6 +170,8 @@ Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Component\AssetMapper\ImportMap\ImportMapManager"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Component\AssetMapper\Compressor\CompressorInterface"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Contracts\HttpClient\HttpClientInterface"; reason: private alias.
+Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Contracts\HttpClient\HttpClientInterface $coinGeckoClient"; reason: private alias.
+Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Contracts\HttpClient\HttpClientInterface $exchangeClient"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "mailer"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "Symfony\Component\Mailer\MailerInterface"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "mailer.default_transport"; reason: private alias.
@@ -319,7 +321,11 @@ Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service ".service_locator.JLytdW3"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "validator"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "http_client"; reason: private alias.
+Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "coinGeckoClient"; reason: private alias.
+Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "exchangeClient"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service ".debug.http_client.inner"; reason: private alias.
+Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service ".debug.coinGeckoClient.inner"; reason: private alias.
+Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service ".debug.exchangeClient.inner"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "asset_mapper.mapped_asset_factory"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "assets._default_package"; reason: private alias.
 Symfony\Component\DependencyInjection\Compiler\RemovePrivateAliasesPass: Removed service "controller_resolver"; reason: private alias.
@@ -778,6 +784,8 @@ Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inl
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "asset_mapper.compressor" to "asset_mapper.assets.command.compress".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "monolog.logger.http_client" to "http_client.transport".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "http_client.uri_template.inner" to "http_client.uri_template".
+Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "coinGeckoClient.uri_template.inner" to "coinGeckoClient.uri_template".
+Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "exchangeClient.uri_template.inner" to "exchangeClient.uri_template".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "mailer.transport_factory" to "mailer.transports".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service ".service_locator.ILdUWIS" to "translator.default".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "translator.formatter.default" to "translator.default".
@@ -1027,6 +1035,8 @@ Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inl
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "texter.messenger.push_handler" to ".messenger.handler_descriptor.EXsqOW5".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "texter.messenger.desktop_handler" to ".messenger.handler_descriptor.Dkv9sRY".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "http_client.uri_template" to ".debug.http_client".
+Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "coinGeckoClient.uri_template" to ".debug.coinGeckoClient".
+Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "exchangeClient.uri_template" to ".debug.exchangeClient".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service ".doctrine.orm.default_metadata_driver.inner" to ".doctrine.orm.default_metadata_driver".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service ".service_locator.BxSdgVt" to ".doctrine.orm.default_metadata_driver".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "monolog.logger.doctrine" to "doctrine.dbal.logging_middleware.default".
@@ -1096,7 +1106,7 @@ Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inl
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "serializer.mapping.class_discriminator_resolver" to "debug.serializer".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "serializer.name_converter.metadata_aware" to "debug.serializer".
 Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass: Inlined service "serializer.mapping.class_discriminator_resolver" to "debug.serializer".
-Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\UnusedTagsPass: Tag "container.decorator" was defined on service(s) "security.csrf.same_origin_token_manager", "debug.validator", "debug.serializer", "debug.security.access.decision_manager", "debug.security.firewall.authenticator.main", "debug.security.event_dispatcher.main", ".debug.http_client", "messenger.default_bus", "event_dispatcher", but was never used.
+Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\UnusedTagsPass: Tag "container.decorator" was defined on service(s) "security.csrf.same_origin_token_manager", "debug.validator", "debug.serializer", "debug.security.access.decision_manager", "debug.security.firewall.authenticator.main", "debug.security.event_dispatcher.main", ".debug.http_client", ".debug.coinGeckoClient", ".debug.exchangeClient", "messenger.default_bus", "event_dispatcher", but was never used.
 Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\UnusedTagsPass: Tag "monolog.channel_logger" was defined on service(s) "monolog.logger", "monolog.logger.request", "monolog.logger.messenger", "monolog.logger.cache", "monolog.logger.asset_mapper", "monolog.logger.mailer", "monolog.logger.event", "monolog.logger.security", "monolog.logger.deprecation", but was never used.
 Symfony\Component\DependencyInjection\Compiler\RemoveBuildParametersPass: Removing build parameter ".serializer.named_serializers".
 Symfony\Component\DependencyInjection\Compiler\RemoveBuildParametersPass: Removing build parameter ".json_streamer.stream_writers_dir".

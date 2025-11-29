@@ -20,7 +20,7 @@ class UserWeatherService
     {
         $user = $this->userRepository->find($userId);
         if (!$user || !$user->getCity()) {
-            throw new \RuntimeException('Utilisateur non trouvé ou ville non définie.');
+            return [];
         }
 
         $cityName = $user->getCity();
