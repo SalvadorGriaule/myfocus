@@ -46,8 +46,8 @@ final class DashboardController extends AbstractController
         $weather = $weatherService->getCurrentForUser($this->getUser()->getId()); // Placeholder pour weather API
         $news = $newsService->getNews($user->getNewsKeywords() ?? 'technology');
         $finance = [
-            'rate' => $financeService->getExchangeRate(),
-            'bitcoin' => $financeService->getBitcoinPrice(),
+            'rate' => $financeService->getEurToUsdRate(),
+            'bitcoin' => $financeService->getBitcoinPriceEur(),
         ];
 
         return $this->render('dashboard/index.html.twig', [

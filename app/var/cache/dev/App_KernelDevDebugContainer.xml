@@ -453,7 +453,10 @@
     <service id="App\Service\CityLoader" class="App\Service\CityLoader" autowire="true" autoconfigure="true">
       <argument type="service" id="parameter_bag"/>
     </service>
-    <service id="App\Service\FinanceService" class="App\Service\FinanceService" autowire="true" autoconfigure="true"/>
+    <service id="App\Service\FinanceService" class="App\Service\FinanceService" autowire="true" autoconfigure="true">
+      <argument type="service" id=".debug.coinGeckoClient"/>
+      <argument type="service" id=".debug.exchangeClient"/>
+    </service>
     <service id="App\Service\NewsService" class="App\Service\NewsService" autowire="true" autoconfigure="true"/>
     <service id="App\Service\UserWeatherService" class="App\Service\UserWeatherService" autowire="true" autoconfigure="true">
       <argument type="service" id="App\Service\CityLoader"/>
@@ -621,6 +624,8 @@
         <argument key="cache.messenger.restart_workers_signal" type="service" id="cache.messenger.restart_workers_signal" on-invalid="ignore_uninitialized"/>
         <argument key="http_client.transport" type="service" id="http_client.transport" on-invalid="ignore_uninitialized"/>
         <argument key="http_client" type="service" id=".debug.http_client" on-invalid="ignore_uninitialized"/>
+        <argument key="coinGeckoClient" type="service" id=".debug.coinGeckoClient" on-invalid="ignore_uninitialized"/>
+        <argument key="exchangeClient" type="service" id=".debug.exchangeClient" on-invalid="ignore_uninitialized"/>
         <argument key="mailer.message_logger_listener" type="service" id="mailer.message_logger_listener" on-invalid="ignore_uninitialized"/>
         <argument key="translation.locale_switcher" type="service" id="translation.locale_switcher" on-invalid="ignore_uninitialized"/>
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
@@ -648,6 +653,8 @@
         <argument key="monolog.handler.console" type="service" id="monolog.handler.console" on-invalid="ignore_uninitialized"/>
         <argument key="debug.security.event_dispatcher.main" type="service" id="debug.security.event_dispatcher.main" on-invalid="ignore_uninitialized"/>
         <argument key=".debug.http_client" type="service" id=".debug.http_client" on-invalid="ignore_uninitialized"/>
+        <argument key=".debug.coinGeckoClient" type="service" id=".debug.coinGeckoClient" on-invalid="ignore_uninitialized"/>
+        <argument key=".debug.exchangeClient" type="service" id=".debug.exchangeClient" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
         <argument key="request_stack" type="collection">
@@ -681,6 +688,12 @@
           <argument>?reset</argument>
         </argument>
         <argument key="http_client" type="collection">
+          <argument>?reset</argument>
+        </argument>
+        <argument key="coinGeckoClient" type="collection">
+          <argument>?reset</argument>
+        </argument>
+        <argument key="exchangeClient" type="collection">
           <argument>?reset</argument>
         </argument>
         <argument key="mailer.message_logger_listener" type="collection">
@@ -763,6 +776,12 @@
           <argument>reset</argument>
         </argument>
         <argument key=".debug.http_client" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key=".debug.coinGeckoClient" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key=".debug.exchangeClient" type="collection">
           <argument>reset</argument>
         </argument>
       </argument>
@@ -2093,6 +2112,16 @@
     <service id="http_client.messenger.ping_webhook_handler" class="Symfony\Component\HttpClient\Messenger\PingWebhookMessageHandler">
       <tag name="messenger.message_handler"/>
       <argument type="service" id=".debug.http_client"/>
+    </service>
+    <service id="coinGeckoClient.uri_template" class="Symfony\Component\HttpClient\UriTemplateHttpClient">
+      <argument type="service" id="coinGeckoClient.uri_template.inner"/>
+      <argument>null</argument>
+      <argument type="collection"/>
+    </service>
+    <service id="exchangeClient.uri_template" class="Symfony\Component\HttpClient\UriTemplateHttpClient">
+      <argument type="service" id="exchangeClient.uri_template.inner"/>
+      <argument>null</argument>
+      <argument type="collection"/>
     </service>
     <service id="mailer.mailer" class="Symfony\Component\Mailer\Mailer">
       <argument type="service" id="mailer.transports"/>
@@ -5209,6 +5238,14 @@
       <call method="registerClient">
         <argument>http_client</argument>
         <argument type="service" id=".debug.http_client"/>
+      </call>
+      <call method="registerClient">
+        <argument>coinGeckoClient</argument>
+        <argument type="service" id=".debug.coinGeckoClient"/>
+      </call>
+      <call method="registerClient">
+        <argument>exchangeClient</argument>
+        <argument type="service" id=".debug.exchangeClient"/>
       </call>
     </service>
     <service id="notifier.data_collector" class="Symfony\Component\Notifier\DataCollector\NotificationDataCollector">
@@ -8720,6 +8757,22 @@
       <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
       <argument type="service" id="profiler.is_disabled_state_checker" on-invalid="ignore"/>
     </service>
+    <service id=".debug.coinGeckoClient" class="Symfony\Component\HttpClient\TraceableHttpClient">
+      <tag name="http_client.client"/>
+      <tag name="kernel.reset" method="reset"/>
+      <tag name="container.decorator" id="coinGeckoClient" inner="coinGeckoClient.uri_template.inner"/>
+      <argument type="service" id="coinGeckoClient.uri_template"/>
+      <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
+      <argument type="service" id="profiler.is_disabled_state_checker" on-invalid="ignore"/>
+    </service>
+    <service id=".debug.exchangeClient" class="Symfony\Component\HttpClient\TraceableHttpClient">
+      <tag name="http_client.client"/>
+      <tag name="kernel.reset" method="reset"/>
+      <tag name="container.decorator" id="exchangeClient" inner="exchangeClient.uri_template.inner"/>
+      <argument type="service" id="exchangeClient.uri_template"/>
+      <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
+      <argument type="service" id="profiler.is_disabled_state_checker" on-invalid="ignore"/>
+    </service>
     <service id=".service_locator.wy_sXIY" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -9216,6 +9269,28 @@
         <argument type="service" id="http_client.transport"/>
       </argument>
       <factory function="current"/>
+    </service>
+    <service id="coinGeckoClient.uri_template.inner" class="Symfony\Component\HttpClient\ScopingHttpClient" constructor="forBaseUri">
+      <argument type="service" id="http_client.transport"/>
+      <argument>https://api.coingecko.com</argument>
+      <argument type="collection">
+        <argument key="timeout">5</argument>
+        <argument key="query" type="collection"/>
+        <argument key="headers" type="collection"/>
+        <argument key="resolve" type="collection"/>
+        <argument key="extra" type="collection"/>
+      </argument>
+    </service>
+    <service id="exchangeClient.uri_template.inner" class="Symfony\Component\HttpClient\ScopingHttpClient" constructor="forBaseUri">
+      <argument type="service" id="http_client.transport"/>
+      <argument>https://api.frankfurter.dev/v1/</argument>
+      <argument type="collection">
+        <argument key="timeout">5</argument>
+        <argument key="query" type="collection"/>
+        <argument key="headers" type="collection"/>
+        <argument key="resolve" type="collection"/>
+        <argument key="extra" type="collection"/>
+      </argument>
     </service>
     <service id="asset_mapper.cached_mapped_asset_factory.inner" class="Symfony\Component\AssetMapper\Factory\MappedAssetFactory">
       <argument type="service" id="asset_mapper.public_assets_path_resolver"/>
@@ -10606,6 +10681,8 @@
     <service id="Symfony\Component\AssetMapper\ImportMap\ImportMapManager" alias="asset_mapper.importmap.manager"/>
     <service id="Symfony\Component\AssetMapper\Compressor\CompressorInterface" alias="asset_mapper.compressor"/>
     <service id="Symfony\Contracts\HttpClient\HttpClientInterface" alias=".debug.http_client"/>
+    <service id="Symfony\Contracts\HttpClient\HttpClientInterface $coinGeckoClient" alias=".debug.coinGeckoClient"/>
+    <service id="Symfony\Contracts\HttpClient\HttpClientInterface $exchangeClient" alias=".debug.exchangeClient"/>
     <service id="mailer" alias="mailer.mailer"/>
     <service id="Symfony\Component\Mailer\MailerInterface" alias="mailer.mailer"/>
     <service id="mailer.default_transport" alias="mailer.transports"/>
@@ -10761,7 +10838,11 @@
     <service id=".service_locator.JLytdW3" alias=".service_locator.HxALDTI"/>
     <service id="validator" alias="debug.validator"/>
     <service id="http_client" alias=".debug.http_client"/>
+    <service id="coinGeckoClient" alias=".debug.coinGeckoClient"/>
+    <service id="exchangeClient" alias=".debug.exchangeClient"/>
     <service id=".debug.http_client.inner" alias="http_client.uri_template"/>
+    <service id=".debug.coinGeckoClient.inner" alias="coinGeckoClient.uri_template"/>
+    <service id=".debug.exchangeClient.inner" alias="exchangeClient.uri_template"/>
     <service id="asset_mapper.mapped_asset_factory" alias="asset_mapper.cached_mapped_asset_factory"/>
     <service id="assets._default_package" alias="asset_mapper.asset_package"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
